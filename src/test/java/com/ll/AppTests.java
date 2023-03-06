@@ -95,5 +95,24 @@ public class AppTests {
                 .doesNotContain("4번 명언이 등록되었습니다.");
     }
 
+    @Test
+    @DisplayName("목록 입력시 목록 반환")
+    public void t7() {
+        String rs = AppTestRunner.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                나의 죽음을 적들에게 알리지 마라.
+                이순신
+                목록
+                """);
+
+        assertThat(rs)
+                .contains("번호 / 작가 / 명언")
+                .contains("-".repeat(30))
+                .contains("2 / 이순신 / 나의 죽음을 적들에게 알리지 마라.")
+                .contains("1 / 작자미상 / 현재를 사랑하라.");
+    }
 
 }
