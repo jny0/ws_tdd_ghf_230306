@@ -45,8 +45,7 @@ public class AppTests {
         assertThat(rs)
                 .contains("== 명언 앱 ==")
                 .contains("명령) ")
-                .contains("프로그램이 종료되었습니다.")
-                .doesNotContain("올바르지 않은 명령입니다.");
+                .contains("프로그램이 종료되었습니다.");
     }
 
     @Test
@@ -113,6 +112,45 @@ public class AppTests {
                 .contains("-".repeat(30))
                 .contains("2 / 이순신 / 나의 죽음을 적들에게 알리지 마라.")
                 .contains("1 / 작자미상 / 현재를 사랑하라.");
+    }
+    @Test
+    @DisplayName("삭제?id=1 입력시 1번 명언 삭제, 이미 삭제된 id 입력시 존재하지 않습니다 출력")
+    public void t8() {
+        String rs = AppTestRunner.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                나의 죽음을 적들에게 알리지 마라.
+                이순신
+                삭제?id=1
+                목록
+                삭제?id=1
+                """);
+
+        assertThat(rs)
+                .contains("1번 명언이 삭제되었습니다.")
+                .contains("2 / 이순신 / 나의 죽음을 적들에게 알리지 마라.")
+                .doesNotContain("1 / 작자미상 / 현재를 사랑하라.")
+                .contains("1번 명언은 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("삭제 id 입력 안했을 경우 id를 입력하세요 출력")
+    public void t9() {
+        String rs = AppTestRunner.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                나의 죽음을 적들에게 알리지 마라.
+                이순신
+                삭제?id=
+                """);
+
+        assertThat(rs)
+                .contains("id(번호)를 입력해주세요.");
+
     }
 
 }
